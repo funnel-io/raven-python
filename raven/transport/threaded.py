@@ -6,6 +6,7 @@ raven.transport.threaded
 :license: BSD, see LICENSE for more details.
 """
 from __future__ import absolute_import
+from __future__ import print_function
 
 import atexit
 import logging
@@ -13,6 +14,8 @@ import threading
 import os
 
 from time import sleep, time
+
+import sys
 
 from raven.transport.base import AsyncTransport
 from raven.transport.http import HTTPTransport
@@ -71,13 +74,13 @@ class AsyncWorker(object):
                 size = self._queue.qsize()
 
                 print("Sentry is attempting to send %i pending error messages"
-                      % size)
-                print("Waiting up to %s seconds" % timeout)
+                      % size, file=sys.stderr)
+                print("Waiting up to %s seconds" % timeout, file=sys.stderr)
 
                 if os.name == 'nt':
-                    print("Press Ctrl-Break to quit")
+                    print("Press Ctrl-Break to quit", file=sys.stderr)
                 else:
-                    print("Press Ctrl-C to quit")
+                    print("Press Ctrl-C to quit", file=sys.stderr)
 
                 self._timed_queue_join(timeout - initial_timeout)
 
